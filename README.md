@@ -38,3 +38,73 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Application design
+
+Mock
+Map out components with SRP in mind
+e.g. 
+- root
+- banner
+- house list
+- house row
+
+etc.
+
+Should table header be separate? Trivial? Should be part of house list, but then what about house row?
+
+No hard rules. These are the decisions which need to be made. 
+Components shouldn't be too complicated.
+e.g. add filter to header? Then warrants extraction
+
+The Add button, should really have been a separate component, as it breaks SRP for house list.
+Same for house component. List of bids and addition are coupled, maybe not wise
+
+Need to apply hierarchy to components e.g.
+
+- App
+    - Banner
+    - Houselist
+        -HouseRow
+    - House
+        - BidList
+        - Addbid (This should really be a child of BidList)
+
+Also think about project file structure:
+- file type vs feature (with common dir for cross cutting concerns)
+- nesting level max 3 or 4
+
+Creating 1st POC
+
+- No interactivity
+- Without state
+- Just props
+- in memory data source
+
+Then introduce state/interactivity.
+
+Should data be state? (state will trigger re-renders)
+- Is it passed by a prop
+- does is change over time
+- can it be computed (e.g. house count...therefore can be computed, so no)
+what about default house image? static string, so no.
+
+Only 1 component that owns the state, where it is introduced.
+Place as low in the hierarchy as poss
+
+If a common parent doesn't exist for state handling, consider making one. And 'lifting state' to that level.
+
+How to apply state?
+- useState
+- custom hook (useHouses)
+- context
+
+
+
+Consider redux (maybe overkill) or React Query
+
+
+
+
+
+
